@@ -27,7 +27,7 @@ COPY_LARGE + ~%patch_dir%/itm/BAG02.ITM~ ~%patch_dir%/itm/BAG02_.ITM~
 	~%patch_dir%/itm/WAND12.ITM~ ~%patch_dir%/itm/WAND12_.ITM~
 
 //Compatibility with BG1UB "Item Corrections and Restorations" component
-ACTION_IF (FILE_EXISTS ~WeiDU-BGEE.log~) AND NOT (FILE_CONTAINS ~WeiDU-BGEE.log~ ~BG1UB\.TP2. #[0-9]+ #22 ~) BEGIN
+ACTION_IF (FILE_EXISTS ~WeiDU-BGSoD.log~) AND NOT (FILE_CONTAINS ~WeiDU-BGSoD.log~ ~BG1UB\.TP2. #[0-9]+ #22 ~) BEGIN
 	DELETE + ~%patch_dir%/itm/AX1H07.ITM~
 	~%patch_dir%/itm/MAGE02.ITM~
 END
@@ -65,6 +65,7 @@ DELETE + ~%patch_dir%/itm/BAG02.ITM~
 	//~%patch_dir%/itm/AROW03.ITM~ //BG2 version optionally restored via EET_Tweaks
 	//~%patch_dir%/itm/AROW04.ITM~ //BG2 version optionally restored via EET_Tweaks
 	//~%patch_dir%/itm/AROW06.ITM~ //BG2 version optionally restored via EET_Tweaks
+	//~%patch_dir%/itm/AROW07.ITM~ //BG2 version is bugged
 	//~%patch_dir%/itm/AROW08.ITM~ //BG2 version optionally restored via EET_Tweaks
 	//~%patch_dir%/itm/AROW09.ITM~ //BG2 version optionally restored via EET_Tweaks
 	//~%patch_dir%/itm/AROW14.ITM~ //BG2 version optionally restored via EET_Tweaks
@@ -121,7 +122,6 @@ DELETE + ~%patch_dir%/itm/BAG02.ITM~
 	~%patch_dir%/itm/ANTIWEB.ITM~
 	~%patch_dir%/itm/AROW01.ITM~
 	~%patch_dir%/itm/AROW05.ITM~
-	~%patch_dir%/itm/AROW07.ITM~
 	~%patch_dir%/itm/AROW10.ITM~
 	~%patch_dir%/itm/AROW11.ITM~
 	~%patch_dir%/itm/AROW12.ITM~
@@ -545,7 +545,7 @@ DELETE + ~%patch_dir%/itm/BAG02.ITM~
 	~%patch_dir%/itm/FIRESEED.ITM~
 	~%patch_dir%/itm/FIST.ITM~
 	~%patch_dir%/itm/FLAM01.ITM~
-	~%patch_dir%/itm/FLIND1.ITM~
+	//~%patch_dir%/itm/FLIND1.ITM~ //BG2:EE item still has vanilla BG1 bug
 	~%patch_dir%/itm/FRAG01.ITM~
 	~%patch_dir%/itm/FREERING.ITM~
 	~%patch_dir%/itm/FROSTY.ITM~

@@ -27,14 +27,6 @@ LANGUAGE ~Spanish~
 	~EET/lang/es_ES/dialog.tra~
 	~EET/lang/es_ES/2da.tra~
 	~EET/lang/es_ES/compatibility.tra~
-/*LANGUAGE ~Deutsch (German)~
-	~de_DE~
-	~EET/lang/de_DE/prompts.tra~
-	~EET/lang/de_DE/setup.tra~
-	~EET/lang/de_DE/chapters.tra~
-	~EET/lang/de_DE/dialog.tra~
-	~EET/lang/de_DE/2da.tra~
-	~EET/lang/de_DE/compatibility.tra~
 LANGUAGE ~French~
 	~fr_FR~
 	~EET/lang/fr_FR/prompts.tra~
@@ -42,7 +34,23 @@ LANGUAGE ~French~
 	~EET/lang/fr_FR/chapters.tra~
 	~EET/lang/fr_FR/dialog.tra~
 	~EET/lang/fr_FR/2da.tra~
-	~EET/lang/fr_FR/compatibility.tra~*/
+	~EET/lang/fr_FR/compatibility.tra~
+LANGUAGE ~Czech~
+	~cs_CZ~
+	~EET/lang/cs_CZ/prompts.tra~
+	~EET/lang/cs_CZ/setup.tra~
+	~EET/lang/cs_CZ/chapters.tra~
+	~EET/lang/cs_CZ/dialog.tra~
+	~EET/lang/cs_CZ/2da.tra~
+	~EET/lang/cs_CZ/compatibility.tra~
+LANGUAGE ~Russian~
+	~ru_RU~
+	~EET/lang/ru_RU/prompts.tra~
+	~EET/lang/ru_RU/setup.tra~
+	~EET/lang/ru_RU/chapters.tra~
+	~EET/lang/ru_RU/dialog.tra~
+	~EET/lang/ru_RU/2da.tra~
+	~EET/lang/ru_RU/compatibility.tra~
 
 /////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\
 /////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\/////\\\\\
@@ -155,10 +163,10 @@ INCLUDE ~%MOD_FOLDER%/lib/pcu_dict.tph~
 INCLUDE ~%MOD_FOLDER%/lib/add_spell_ex.tpa~
 
 ACTION_IF FILE_EXISTS ~%bgee_dir%/WeiDU.log~ BEGIN
-	COPY ~%bgee_dir%/WeiDU.log~ ~WeiDU-BGEE.log~
+	COPY ~%bgee_dir%/WeiDU.log~ ~WeiDU-BGSoD.log~
 		REPLACE_TEXTUALLY ~^//.*[%newline%]*~ ~~ //removes "Recently uninstalled" lines
 END ELSE BEGIN
-	COPY ~.../blank.txt~ ~WeiDU-BGEE.log~
+	COPY ~.../blank.txt~ ~WeiDU-BGSoD.log~
 END
 
 LAF GET_SYSTEM_ARCH RET SYSTEM_ARCH END
@@ -752,7 +760,7 @@ COPY_EXISTING ~BGEE.LUA~ ~override~
 	REPLACE_TEXTUALLY ~{'blackpit',.+[%newline%]*~ ~~
 	REPLACE_TEXTUALLY ~{'sodcin0[1-3]',.+[%newline%]*~ ~~
 	REPLACE_TEXTUALLY ~JOURNAL_MODE_EDIT = 3,~ ~JOURNAL_MODE_EDIT = 3,
-	
+
 	START_CAMPAIGN_BG1 = 1,
 	START_CAMPAIGN_SOD = 2,
 	START_CAMPAIGN_SOA = 3,
@@ -1742,10 +1750,10 @@ COPY ~%MOD_FOLDER%/base/BALDUR.GAM~ ~override~
 		WRITE_SHORT ("%npcs_off%" + 0x92) 0xffff
 		WRITE_SHORT ("%npcs_off%" + 0xb4) 0xffff
 		WRITE_SHORT ("%npcs_off%" + 0xb6) 0xffff
-		WRITE_SHORT ("%npcs_off%" + 0xb8) 0xffff	  
+		WRITE_SHORT ("%npcs_off%" + 0xb8) 0xffff
 	END
 
-	PATCH_IF ("%cnt%" > 0) BEGIN	
+	PATCH_IF ("%cnt%" > 0) BEGIN
 		SET delta = 0x160 * cnt
 		SET npcs_cnt = npcs_cnt + cnt
 		WRITE_LONG 0x34 "%npcs_cnt%"
@@ -1871,6 +1879,7 @@ COPY ~%MOD_FOLDER%/base/spl/SPWI123.SPL~ ~override~
 	~%MOD_FOLDER%/base/spl/K#PP_REM.SPL~ ~override~
 	~%MOD_FOLDER%/base/spl/K#FATIGP.SPL~ ~override~
 	~%MOD_FOLDER%/base/spl/K#REST.SPL~ ~override~
+	~%MOD_FOLDER%/base/spl/K#TEST.SPL~ ~override~
 	~%MOD_FOLDER%/base/spl/K#UNREST.SPL~ ~override~
 	~%MOD_FOLDER%/base/spl/K#UNSELE.SPL~ ~override~
 	~%MOD_FOLDER%/base/spl/K#UNSELR.SPL~ ~override~
@@ -2377,7 +2386,7 @@ ACTION_DEFINE_ASSOCIATIVE_ARRAY strref_wmp BEGIN
 END
 ACTION_PHP_EACH strref_wmp AS content => strref BEGIN
 	ACTION_IF (strref >= 199000) AND (strref < 200000) BEGIN
-		ACTION_IF (VARIABLE_IS_SET $fl#NAME("%content%")) AND ($fl#NAME("%content%") STR_CMP "") BEGIN 
+		ACTION_IF (VARIABLE_IS_SET $fl#NAME("%content%")) AND ($fl#NAME("%content%") STR_CMP "") BEGIN
 			OUTER_SPRINT string $fl#NAME("%content%")
 		END ELSE ACTION_IF (VARIABLE_IS_SET $fl#TOOL("%content%")) AND ($fl#TOOL("%content%") STR_CMP "") BEGIN
 			OUTER_SPRINT string $fl#TOOL("%content%")
@@ -2417,7 +2426,7 @@ COPY ~%patch_dir%/BGMAP.wmp~ ~override~
 ///// Iron Crisis (item shattering)                    \\\\\
 /////                                                  \\\\\
 
-ACTION_DEFINE_ARRAY eet_ironCrisis_array BEGIN 
+ACTION_DEFINE_ARRAY eet_ironCrisis_array BEGIN
 AX1H01.ITM
 AX1H04.ITM
 BLUN02.ITM
@@ -2657,15 +2666,17 @@ COPY ~.../blank.txt~ ~override/EET.flag~
 APPEND ~EET.flag~ ~EET_JOURNAL~
 PRINT ~'EET.flag' file is used by WeiDU to recognize the installation as EET~
 
+
 ACTION_FOR_EACH file IN EET_end EET_gui BEGIN
-	COPY + ~%MOD_FOLDER%/lib/%file%.tp2~ ~%file%.tp2~
+	//COPY + ~%MOD_FOLDER%/lib/%file%.tp2~ ~%file%.tp2~
 	ACTION_IF ~%WEIDU_OS%~ STR_EQ ~osx~ BEGIN
 		COPY ~setup-EET.command~ ~setup-%file%.command~
-			REPLACE_TEXTUALLY ~EET/EET.tp2 --log SETUP-EET.DEBUG~ ~%file%.tp2 --log SETUP-%file%.DEBUG~
+			REPLACE_TEXTUALLY ~EET/EET.tp2 --log SETUP-EET.DEBUG~ ~%file%/%file%.tp2 --log SETUP-%file%.DEBUG~
 	END ELSE BEGIN
 		COPY ~%weidu%~ ~setup-%file%%exe%~
 	END
 END
+
 
 ACTION_IF (~%argv[0]%~ STRING_CONTAINS_REGEXP ~[Ss]~ = 0) BEGIN
 	PRINT ~Skipping shortcut creation~
